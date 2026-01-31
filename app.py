@@ -315,4 +315,3 @@ if submit:
     else:
         st.success("✅ TIDAK TERDETEKSI DIABETES")
 
-!streamlit run app.py &>/content/logs.txt &
