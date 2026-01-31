@@ -29,9 +29,12 @@ df = load_data()
 # =====================
 # PREPROCESSING
 # =====================
-label_encoder = LabelEncoder()
-df["gender"] = label_encoder.fit_transform(df["gender"])
-df["smoking_history"] = label_encoder.fit_transform(df["smoking_history"])
+gender_encoder = LabelEncoder()
+smoking_encoder = LabelEncoder()
+
+df["gender"] = gender_encoder.fit_transform(df["gender"])
+df["smoking_history"] = smoking_encoder.fit_transform(df["smoking_history"])
+
 
 X = df.drop("diabetes", axis=1)
 y = df["diabetes"]
@@ -57,8 +60,8 @@ with st.form("prediction_form"):
     hypertension = st.selectbox("Hypertension", [0, 1])
     heart_disease = st.selectbox("Heart Disease", [0, 1])
     smoking = st.selectbox(
-        "Smoking History",
-        df["smoking_history"].unique()
+    "Smoking History",
+    smoking_encoder.classes_
     )
     bmi = st.number_input("BMI", 10.0, 60.0, 25.0)
     hba1c = st.number_input("HbA1c Level", 3.0, 15.0, 5.5)
@@ -70,14 +73,15 @@ with st.form("prediction_form"):
 # PREDICTION
 # =====================
 if submitted:
-    gender_enc = label_encoder.transform([gender])[0]
+    gender_enc = gender_encoder.transform([gender])[0]
+    smoking_enc = smoking_encoder.transform([smoking])[0]
 
     input_data = np.array([[
         gender_enc,
         age,
         hypertension,
         heart_disease,
-        smoking,
+        smoking_enc,
         bmi,
         hba1c,
         glucose
