@@ -14,7 +14,6 @@ Original file is located at
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -147,11 +146,28 @@ if menu == "Overview":
 if menu == "EDA":
     st.header("📊 Exploratory Data Analysis")
 
+    st.subheader("Preview Dataset")
     st.dataframe(df.head())
 
+    st.subheader("Distribusi Diabetes")
     fig, ax = plt.subplots()
     df["diabetes"].value_counts().plot(kind="bar", ax=ax)
     st.pyplot(fig)
+
+    st.subheader("Korelasi Antar Fitur")
+    corr = df.corr(numeric_only=True)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    im = ax.imshow(corr, cmap="coolwarm")
+
+    ax.set_xticks(range(len(corr.columns)))
+    ax.set_yticks(range(len(corr.columns)))
+    ax.set_xticklabels(corr.columns, rotation=90)
+    ax.set_yticklabels(corr.columns)
+
+    plt.colorbar(im)
+    st.pyplot(fig)
+
 
     st.info("📌 Insight: Data menunjukkan ketidakseimbangan kelas.")
 
