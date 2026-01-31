@@ -320,12 +320,3 @@ if submit:
         st.success("✅ TIDAK TERDETEKSI DIABETES")
 
 !streamlit run app.py &>/content/logs.txt &
-
-!ngrok config add-authtoken 38jR3UGDcx8aHptuVioohHf2SNK_6WAYfM9S5riSGS6cjj59Q
-
-from pyngrok import ngrok
-
-ngrok.set_auth_token("38jR3UGDcx8aHptuVioohHf2SNK_6WAYfM9S5riSGS6cjj59Q")
-
-public_url = ngrok.connect(8501)
-print(public_url)
